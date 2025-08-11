@@ -24,9 +24,9 @@ pipeline {
 
         stage('Construir imagen Docker') {
             steps {
-              
+                dir('backend') {
                      bat 'docker build -t garysurco/cicddockerdiplo .'
-                
+                }
             }
         }
 
