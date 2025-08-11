@@ -6,7 +6,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Instalar todas las dependencias, incluyendo dev
-RUN npm install --include=dev
+RUN npm ci
 
 COPY . .
 
