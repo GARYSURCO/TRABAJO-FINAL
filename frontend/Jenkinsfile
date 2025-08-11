@@ -1,0 +1,59 @@
+pipeline {
+    agent any
+
+    triggers {
+        // Cada 5 minutos
+        cron('H/5 * * * *')
+    }
+
+    environment {
+        DOCKER_IMAGE = "garysurco/task-frontend"
+        DOCKER_TAG = "latest"
+        NODE_ENV = "production"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/GARYSURCO/TRABAJO-FINAL.git'
+            }
+        }
+
+        stage('Instalar dependencias') {
+            steps {
+                dir('frontend') {
+                    bat 'npm install'
+                }
+            }
+        }
+
+        stage('Compilar frontend') {
+            steps {
+                dir('frontend') {
+                    bat 'npm run build'
+                }
+            }
+        }
+
+        stage('Construir imagen Docker') {
+            steps {
+                dir('frontend') {
+                    bat "docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} ."
+                }
+            }
+        }
+
+        stage('Push image to Docker Hub') {
+            steps {
+                script {
+                    withCredentials([string(credentialsId: 'dockerhubpwddiplomado', variable: 'DOCKER_PASSWORD')]) {
+                        bat """
+                        echo %DOCKER_PASSWORD% | docker login -u garysurco --password-stdin
+                        docker push ${DOCKER_IMAGE}:${DOCKER_TAG}
+                        """
+                    }
+                }
+            }
+        }
+    }
+}
