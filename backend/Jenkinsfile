@@ -1,0 +1,30 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/GARYSURCO/TRABAJO-FINAL.git'
+                dir('backend') {
+                    echo "Código backend descargado"
+                }
+            }
+        }
+
+        stage('Instalar dependencias') {
+            steps {
+                dir('backend') {
+                    sh 'npm install'
+                }
+            }
+        }
+
+        stage('Prueba simple') {
+            steps {
+                dir('backend') {
+                    sh 'echo "Pipeline ejecutado con éxito en el backend"'
+                }
+            }
+        }
+    }
+}
