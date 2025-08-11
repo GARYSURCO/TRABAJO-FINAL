@@ -14,7 +14,7 @@ pipeline {
         stage('Instalar dependencias') {
             steps {
                 dir('backend') {
-                    sh 'npm install'
+                    bat 'npm install'
                 }
             }
         }
@@ -22,7 +22,7 @@ pipeline {
         stage('Prueba simple') {
             steps {
                 dir('backend') {
-                    sh 'echo "Pipeline ejecutado con éxito en el backend"'
+                    bat 'echo "Pipeline ejecutado con éxito en el backend"'
                 }
             }
         }
