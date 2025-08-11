@@ -1,0 +1,7 @@
+# Ignorar las carpetas y archivos que no son necesarios en el contenedor
+node_modules
+dist
+.git
+.gitignore
+.env
+npm-debug.log
