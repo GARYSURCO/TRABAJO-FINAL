@@ -17,7 +17,7 @@ pipeline {
         stage('Instalar dependencias') {
             steps {
                 dir('backend') {
-                    sh 'npm install'
+                    bat 'npm install'
                 }
             }
         }
