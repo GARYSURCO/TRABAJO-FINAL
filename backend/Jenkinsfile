@@ -1,8 +1,13 @@
 pipeline {
     agent any
 
+    triggers {
+        // Cada 30 minutos
+        cron('H/30 * * * *')
+    }
+
     environment {
-        DOCKER_IMAGE = "garysurco/task-backend"    // Cambia "tuusuario" por tu usuario de DockerHub
+        DOCKER_IMAGE = "garysurco/task-backend"
         DOCKER_TAG = "latest"
         NODE_ENV = "production"
     }
@@ -41,6 +46,6 @@ pipeline {
                     }
                 }
             }
-        }  // <- cierre del stage Push image to Docker Hub
-    }  // <- cierre del bloque stages
-}  // <- cierre del bloque pipeline
+        }
+    }
+}

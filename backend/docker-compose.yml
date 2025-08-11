@@ -1,0 +1,19 @@
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 030889
+      POSTGRES_DB: Trabajo_Final
+    ports:
+      - "5432:5432"
+
+  app:
+    build: .
+    environment:
+      DB_HOST: localhost
+      DB_USER: postgres
+      DB_PASSWORD: mypass
+      DB_NAME: Trabajo_Final
+    depends_on:
+      - db
