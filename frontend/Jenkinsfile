@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     triggers {
-        // Cada 5 minutos
+        // Ejecuta cada 5 minutos
         cron('H/5 * * * *')
     }
 
@@ -38,22 +38,35 @@ pipeline {
         stage('Construir imagen Docker') {
             steps {
                 dir('frontend') {
-                    bat "docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} ."
+                    bat "docker build -t %DOCKER_IMAGE%:%DOCKER_TAG% ."
                 }
             }
         }
 
-        stage('Push image to Docker Hub') {
+        stage('Push a Docker Hub') {
             steps {
                 script {
                     withCredentials([string(credentialsId: 'dockerhubpwddiplomado', variable: 'DOCKER_PASSWORD')]) {
                         bat """
                         echo %DOCKER_PASSWORD% | docker login -u garysurco --password-stdin
-                        docker push ${DOCKER_IMAGE}:${DOCKER_TAG}
+                        docker push %DOCKER_IMAGE%:%DOCKER_TAG%
+                        docker logout
                         """
                     }
                 }
             }
+        }
+    }
+
+    post {
+        success {
+            echo "✅ Pipeline completado con éxito"
+        }
+        failure {
+            echo "❌ El pipeline falló"
+        }
+        always {
+            echo "🔄 Pipeline finalizado"
         }
     }
 }
