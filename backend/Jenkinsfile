@@ -32,16 +32,15 @@ pipeline {
 
         stage('Push image to Docker Hub') {
             steps {
-        script {
-            withCredentials([string(credentialsId: 'dockerhubpwddiplomado', variable: 'DOCKER_PASSWORD')]) {
-                bat """
-                echo %DOCKER_PASSWORD% | docker login -u garysurco --password-stdin
-                docker push garysurco/cicddockerdiplo
-                """
+                script {
+                    withCredentials([string(credentialsId: 'dockerhubpwddiplomado', variable: 'DOCKER_PASSWORD')]) {
+                        bat """
+                        echo %DOCKER_PASSWORD% | docker login -u garysurco --password-stdin
+                        docker push garysurco/cicddockerdiplo
+                        """
+                    }
+                }
             }
-        }
-    }
-
-       
-    }
-}
+        }  // <- cierre del stage Push image to Docker Hub
+    }  // <- cierre del bloque stages
+}  // <- cierre del bloque pipeline
